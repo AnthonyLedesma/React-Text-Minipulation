@@ -9,3 +9,5 @@ Requirements:
 3.)Font size text should be red color when at max/min size.
 4.)Double click on font size text should reset to original setting.
 5.)Checkbox to always current bold status.
+
+Score = 100/100
