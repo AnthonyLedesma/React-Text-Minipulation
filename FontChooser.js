@@ -2,59 +2,35 @@ class FontChooser extends React.Component {
     constructor(props) {
 		super(props);
 		var checked = this.props.bold;
-		var minimum = this.props.min > 1 ? parseInt(this.props.min) : 1 ;
+		var minimum = parseInt(this.props.min) > 1 ? parseInt(this.props.min) : 1 ;
 		var maximum = parseInt(this.props.max);
 		if (maximum < minimum) [minimum, maximum] = [maximum, minimum];
-		var sizeProp = this.props.size;
-		var defaultSize = this.props.size;
+		var sizeProp = parseInt(this.props.size);
+		var defaultSize = parseInt(this.props.size);
 		var shouldBeBold = this.props.bold;
-
-		// if (document.getElementsByName('checkbox').checked) {shouldBeBold=true;} else {shouldBeBold=false;}
 		if (sizeProp < minimum) {sizeProp = minimum;} else if (sizeProp > maximum) {sizeProp = maximum;}
 		this.state = {
 			hidden:true, 
-			size:sizeProp,
+			size:parseInt(sizeProp),
 			textMin:minimum,
 			textMax:maximum,
 			initialSize:defaultSize,
 			isChecked:checked,
-			bold:shouldBeBold
+			bold:shouldBeBold == 'true'
 		};
-
-		this.handleInputChange = this.handleInputChange.bind(this);
-
     }
 	
 	handleClick() {
-		if (this.state.hidden == true) {
-		this.setState( { hidden : false } );
-		}
-		else {
-		this.setState( { hidden : true } );
-		}
+		this.setState( { hidden : !this.state.hidden } );		
 	}
 		
 
-	// handleOnChange() {
-	// 	console.log("Bold goes into handleonChange like this > - " + this.state.bold);
-	// 	if (this.state.bold  == true) {
-			
-	// 		this.setState( { bold : false });
-	// 		console.log("Bold comes out of if handleonChange like this >" + this.state.bold);
-	// 	} else {
-			
-	// 		this.setState( { bold : true });
-	// 		console.log("Bold comes out of if else handleonChange like this >" + this.state.bold);
-	// 	}
-	// }
+	handleOnChange() {
+		if (this.state.bold == true) {
+      this.setState({bold: false});}
+    else{
+      this.setState({bold: true});}
 
-	handleInputChange(event) {
-		const target = event.target;
-		const value = target.type === 'checkbox' ? target.checked : target.value;
-		
-		this.setState({
-			bold: value
-		  });
 	}
 
 	handlePlusClick() {
@@ -85,18 +61,37 @@ class FontChooser extends React.Component {
 		 }
 		return fontColor;
 	}
+
+	// renderBoldText() {
+	// 	if (this.state.bold == 'true') {
+	// 		var fontWeight = 'bold';
+	// 	} 
+	// 	if (this.state.bold == 'false') {
+	// 		var fontWeight = 'normal';
+	// 	}
+	// 	return fontWeight;
+		
+	// }
+
+	
  
     render() {
-		var weight = this.state.bold ? 'normal' : 'bold' ;
-		var renderCheck = this.state.bold;
+		var weight;
+		if (this.state.bold == true) {weight = 'bold'} else {weight = 'normal'}
+
+		var renderCheck;
+		if (weight == 'bold') {renderCheck = true;} else {renderCheck = false;}
 		
-		var curSize = this.state.size;
+		var curSize = parseInt(this.state.size);
+		
 		var textStyle = {
 			fontWeight: weight,
 			fontSize: parseInt(curSize)
 		}
+		
+		
 		var fColor = this.renderTextColor();
-		console.log(weight + "< weight  -  " + renderCheck + "< Render check  - -" + textStyle);
+		console.log(renderCheck);
 		return(
 		   <div>
 
@@ -104,22 +99,37 @@ class FontChooser extends React.Component {
 		   type="checkbox" 
 		   id="boldCheckbox" 
 		   hidden={this.state.hidden} 
-		   onChange={this.handleInputChange} 
-		   checked={renderCheck} />
+		   defaultChecked={renderCheck}
+		   checked={renderCheck}
+		   onChange={this.handleOnChange.bind(this)} 
+			/>
 
 		   <button 
 		   id="decreaseButton" 
 		   hidden={this.state.hidden} 
-		   onClick={this.handleMinusClick.bind(this)}
-		   >-</button>
+		   onClick={this.handleMinusClick.bind(this)} >-</button>
 
-	       <span id="fontSizeSpan" hidden={this.state.hidden} style={fColor} onDoubleClick={this.handleDoubleClick.bind(this)}>{this.state.size}</span>
-	       <button id="increaseButton" hidden={this.state.hidden} onClick={this.handlePlusClick.bind(this)}>+</button>
+		   <span 
+		   id="fontSizeSpan" 
+		   hidden={this.state.hidden} 
+		   style={fColor} 
+		   onDoubleClick={this.handleDoubleClick.bind(this)} >
+		   {this.state.size}
+		   </span>
+
+		   <button 
+		   id="increaseButton" 
+		   hidden={this.state.hidden} 
+		   onClick={this.handlePlusClick.bind(this)} >+</button>
 		   
-	       <span id="textSpan" onClick={this.handleClick.bind(this)} style={textStyle}>{this.props.text}</span>
+		   <span 
+		   id="textSpan" 
+		   onClick={this.handleClick.bind(this)} 
+		   style={textStyle}>
+		   {this.props.text}
+		   </span>
 		   
-	       </div>
-		   
+	       </div> 
 		);
     }
 }
