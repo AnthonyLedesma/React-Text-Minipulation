@@ -4,6 +4,7 @@ Application will render a string of text which uses click events to show the hid
 Once the click event ocurrs a checkbox, a font size text field, and two buttons are rendered which will alter properties of the original string of text. 
 
 Requirements:
+
 1.) Button press should increment font size and string of text size appropreately. 
 
 2.)Button press should ignore when at max/min limitation for size.
